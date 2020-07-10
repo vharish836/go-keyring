@@ -2,8 +2,9 @@ package keyring
 
 import (
 	"fmt"
+
 	"github.com/godbus/dbus"
-	"github.com/zalando/go-keyring/secret_service"
+	ss "github.com/vharish836/go-keyring/secret_service"
 )
 
 type secretServiceProvider struct{}
@@ -24,8 +25,8 @@ func (s secretServiceProvider) Set(service, user, pass string) error {
 	defer svc.Close(session)
 
 	attributes := map[string]string{
-		"username": user,
-		"service":  service,
+		"account": user,
+		"service": service,
 	}
 
 	secret := ss.NewSecret(session.Path(), pass)
@@ -38,7 +39,7 @@ func (s secretServiceProvider) Set(service, user, pass string) error {
 	}
 
 	err = svc.CreateItem(collection,
-		fmt.Sprintf("Password for '%s' on '%s'", user, service),
+		fmt.Sprintf("%s/%s", service, user),
 		attributes, secret)
 	if err != nil {
 		return err
@@ -52,8 +53,8 @@ func (s secretServiceProvider) findItem(svc *ss.SecretService, service, user str
 	collection := svc.GetLoginCollection()
 
 	search := map[string]string{
-		"username": user,
-		"service":  service,
+		"account": user,
+		"service": service,
 	}
 
 	err := svc.Unlock(collection.Path())

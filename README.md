@@ -1,8 +1,8 @@
 # Go Keyring library
 [![Build Status](https://travis-ci.org/zalando/go-keyring.svg?branch=master)](https://travis-ci.org/zalando/go-keyring)
 [![Build status](https://ci.appveyor.com/api/projects/status/l8hdbqng769sc2c5/branch/master?svg=true)](https://ci.appveyor.com/project/mikkeloscar/go-keyring/branch/master)
-[![Go Report Card](https://goreportcard.com/badge/github.com/zalando/go-keyring)](https://goreportcard.com/report/github.com/zalando/go-keyring)
-[![GoDoc](https://godoc.org/github.com/zalando/go-keyring?status.svg)](https://godoc.org/github.com/zalando/go-keyring)
+[![Go Report Card](https://goreportcard.com/badge/github.com/vharish836/go-keyring)](https://goreportcard.com/report/github.com/vharish836/go-keyring)
+[![GoDoc](https://godoc.org/github.com/vharish836/go-keyring?status.svg)](https://godoc.org/github.com/vharish836/go-keyring)
 
 `go-keyring` is an OS-agnostic library for *setting*, *getting* and *deleting*
 secrets from the system keyring. It supports **OS X**, **Linux (dbus)** and
@@ -49,7 +49,7 @@ package main
 import (
     "log"
 
-    "github.com/zalando/go-keyring"
+    "github.com/vharish836/go-keyring"
 )
 
 func main() {
@@ -95,7 +95,7 @@ package implementation
 import (
     "testing"
 
-    "github.com/zalando/go-keyring"
+    "github.com/vharish836/go-keyring"
 )
 
 func TestMockedSetGet(t *testing.T) {
