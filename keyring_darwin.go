@@ -36,12 +36,12 @@ type macOSXKeychain struct{}
 
 // Set stores stores user and pass in the keyring under the defined service
 // name.
-func (k macOSXKeychain) Get(service, username string) (string, error) {
+func (k macOSXKeychain) Get(service, account string) (string, error) {
 	out, err := exec.Command(
 		execPathKeychain,
 		"find-generic-password",
 		"-s", service,
-		"-wa", username).CombinedOutput()
+		"-wa", account).CombinedOutput()
 	if err != nil {
 		if strings.Contains(fmt.Sprintf("%s", out), "could not be found") {
 			err = ErrNotFound
@@ -60,7 +60,7 @@ func (k macOSXKeychain) Get(service, username string) (string, error) {
 }
 
 // Set stores a secret in the keyring given a service name and a user.
-func (k macOSXKeychain) Set(service, username, password string) error {
+func (k macOSXKeychain) Set(service, account, password string) error {
 	// if the added secret has multiple lines, osx will hex encode it
 	// identify this with a well-known prefix.
 	if strings.ContainsRune(password, '\n') {
@@ -72,17 +72,17 @@ func (k macOSXKeychain) Set(service, username, password string) error {
 		"add-generic-password",
 		"-U", //update if exists
 		"-s", service,
-		"-a", username,
+		"-a", account,
 		"-w", password).Run()
 }
 
 // Delete deletes a secret, identified by service & user, from the keyring.
-func (k macOSXKeychain) Delete(service, username string) error {
+func (k macOSXKeychain) Delete(service, account string) error {
 	out, err := exec.Command(
 		execPathKeychain,
 		"delete-generic-password",
 		"-s", service,
-		"-a", username).CombinedOutput()
+		"-a", account).CombinedOutput()
 	if strings.Contains(fmt.Sprintf("%s", out), "could not be found") {
 		err = ErrNotFound
 	}

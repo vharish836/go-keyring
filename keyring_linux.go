@@ -11,7 +11,7 @@ type secretServiceProvider struct{}
 
 // Set stores user and pass in the keyring under the defined service
 // name.
-func (s secretServiceProvider) Set(service, user, pass string) error {
+func (s secretServiceProvider) Set(service, account, pass string) error {
 	svc, err := ss.NewSecretService()
 	if err != nil {
 		return err
@@ -25,7 +25,7 @@ func (s secretServiceProvider) Set(service, user, pass string) error {
 	defer svc.Close(session)
 
 	attributes := map[string]string{
-		"account": user,
+		"account": account,
 		"service": service,
 	}
 
@@ -39,7 +39,7 @@ func (s secretServiceProvider) Set(service, user, pass string) error {
 	}
 
 	err = svc.CreateItem(collection,
-		fmt.Sprintf("%s/%s", service, user),
+		fmt.Sprintf("%s/%s", service, account),
 		attributes, secret)
 	if err != nil {
 		return err
@@ -49,11 +49,11 @@ func (s secretServiceProvider) Set(service, user, pass string) error {
 }
 
 // findItem looksup an item by service and user.
-func (s secretServiceProvider) findItem(svc *ss.SecretService, service, user string) (dbus.ObjectPath, error) {
+func (s secretServiceProvider) findItem(svc *ss.SecretService, service, account string) (dbus.ObjectPath, error) {
 	collection := svc.GetLoginCollection()
 
 	search := map[string]string{
-		"account": user,
+		"account": account,
 		"service": service,
 	}
 
@@ -75,13 +75,13 @@ func (s secretServiceProvider) findItem(svc *ss.SecretService, service, user str
 }
 
 // Get gets a secret from the keyring given a service name and a user.
-func (s secretServiceProvider) Get(service, user string) (string, error) {
+func (s secretServiceProvider) Get(service, account string) (string, error) {
 	svc, err := ss.NewSecretService()
 	if err != nil {
 		return "", err
 	}
 
-	item, err := s.findItem(svc, service, user)
+	item, err := s.findItem(svc, service, account)
 	if err != nil {
 		return "", err
 	}
@@ -102,13 +102,13 @@ func (s secretServiceProvider) Get(service, user string) (string, error) {
 }
 
 // Delete deletes a secret, identified by service & user, from the keyring.
-func (s secretServiceProvider) Delete(service, user string) error {
+func (s secretServiceProvider) Delete(service, account string) error {
 	svc, err := ss.NewSecretService()
 	if err != nil {
 		return err
 	}
 
-	item, err := s.findItem(svc, service, user)
+	item, err := s.findItem(svc, service, account)
 	if err != nil {
 		return err
 	}

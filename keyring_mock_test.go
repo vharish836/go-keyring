@@ -5,7 +5,7 @@ import "testing"
 // TestSet tests setting a user and password in the keyring.
 func TestMockSet(t *testing.T) {
 	mp := mockProvider{}
-	err := mp.Set(service, user, password)
+	err := mp.Set(service, account, password)
 	if err != nil {
 		t.Errorf("Should not fail, got: %s", err)
 	}
@@ -14,12 +14,12 @@ func TestMockSet(t *testing.T) {
 // TestGet tests getting a password from the keyring.
 func TestMockGet(t *testing.T) {
 	mp := mockProvider{}
-	err := mp.Set(service, user, password)
+	err := mp.Set(service, account, password)
 	if err != nil {
 		t.Errorf("Should not fail, got: %s", err)
 	}
 
-	pw, err := mp.Get(service, user)
+	pw, err := mp.Get(service, account)
 	if err != nil {
 		t.Errorf("Should not fail, got: %s", err)
 	}
@@ -33,7 +33,7 @@ func TestMockGet(t *testing.T) {
 func TestMockGetNonExisting(t *testing.T) {
 	mp := mockProvider{}
 
-	_, err := mp.Get(service, user+"fake")
+	_, err := mp.Get(service, account+"fake")
 	if err != ErrNotFound {
 		t.Errorf("Expected error ErrNotFound, got %s", err)
 	}
@@ -43,12 +43,12 @@ func TestMockGetNonExisting(t *testing.T) {
 func TestMockDelete(t *testing.T) {
 	mp := mockProvider{}
 
-	err := mp.Set(service, user, password)
+	err := mp.Set(service, account, password)
 	if err != nil {
 		t.Errorf("Should not fail, got: %s", err)
 	}
 
-	err = mp.Delete(service, user)
+	err = mp.Delete(service, account)
 	if err != nil {
 		t.Errorf("Should not fail, got: %s", err)
 	}
@@ -58,7 +58,7 @@ func TestMockDelete(t *testing.T) {
 func TestMockDeleteNonExisting(t *testing.T) {
 	mp := mockProvider{}
 
-	err := mp.Delete(service, user+"fake")
+	err := mp.Delete(service, account+"fake")
 	if err != ErrNotFound {
 		t.Errorf("Expected error ErrNotFound, got %s", err)
 	}

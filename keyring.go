@@ -15,24 +15,24 @@ var (
 // Keyring provides a simple set/get interface for a keyring service.
 type Keyring interface {
 	// Set password in keyring for user.
-	Set(service, user, password string) error
+	Set(service, account, password string) error
 	// Get password from keyring given service and user name.
-	Get(service, user string) (string, error)
+	Get(service, account string) (string, error)
 	// Delete secret from keyring.
-	Delete(service, user string) error
+	Delete(service, account string) error
 }
 
 // Set password in keyring for user.
-func Set(service, user, password string) error {
-	return provider.Set(service, user, password)
+func Set(service, account, password string) error {
+	return provider.Set(service, account, password)
 }
 
 // Get password from keyring given service and user name.
-func Get(service, user string) (string, error) {
-	return provider.Get(service, user)
+func Get(service, account string) (string, error) {
+	return provider.Get(service, account)
 }
 
 // Delete secret from keyring.
-func Delete(service, user string) error {
-	return provider.Delete(service, user)
+func Delete(service, account string) error {
+	return provider.Delete(service, account)
 }
